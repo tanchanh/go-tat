@@ -1,0 +1,1511 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GÕ TẮT - Dương Tấn Chánh</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --color-primary: #0066B6;
+      --color-accent: #4020D0;
+      --color-lime: #7FDD0F;
+      --color-success: #009911;
+      --color-warning: #EE6000;
+      --color-danger: #FF2040;
+      --color-black: #000000;
+      --color-bg-dark: #1A1A1A;
+      --color-card-dark: #262626;
+      --color-text-muted: #CCCCCC;
+      --color-text-light: #FFFFFF;
+      --border-default: #262626;
+      --border-highlight: #CCCCCC;
+      --radius-sm: 0.35rem;
+      --radius-md: 0.5rem;
+      --radius-lg: 1rem;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 1.0rem;
+      font-weight: normal;
+      background-color: var(--color-bg-dark);
+      color: var(--color-text-light);
+      padding: 0.5rem;
+      padding-bottom: 5rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      word-break: normal;
+      overflow-wrap: break-word;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-align: center;
+      color: var(--color-text-light);
+      margin-top: 0.5rem;
+    }
+
+    .author-name {
+      font-style: normal;
+      font-size: 1.2rem;
+      font-weight: normal;
+      text-align: right;
+      color: var(--color-text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .header-section {
+      display: flex;
+      flex-direction: column;
+      background-color: var(--color-card-dark);
+      padding: 1rem;
+      border: 2px solid var(--border-highlight);
+      border-radius: var(--radius-md);
+      gap: 0.5rem;
+    }
+
+    .header-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-toggle-lock {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.4rem 0.8rem;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: bold;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      border: 2px solid transparent;
+      color: var(--color-text-light);
+      transition: opacity 0.2s ease;
+      user-select: none;
+    }
+
+    .btn-toggle-lock.state-unlocked {
+      background-color: var(--color-warning);
+    }
+
+    .btn-toggle-lock.state-locked {
+      background-color: var(--color-primary);
+      border-color: var(--border-highlight);
+    }
+
+    .nav-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      width: 100%;
+    }
+
+    .tab-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.6rem 0.5rem;
+      background-color: var(--color-bg-dark);
+      color: var(--color-text-light);
+      border: 2px solid var(--border-highlight);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s ease, color 0.2s ease;
+      user-select: none;
+    }
+
+    .tab-btn.tab-active {
+      background-color: var(--color-primary);
+      color: var(--color-text-light);
+      border-color: var(--border-highlight);
+    }
+
+    .tab-pane {
+      display: none;
+      flex-direction: column;
+      gap: 1rem;
+      width: 100%;
+    }
+
+    .tab-pane.pane-active {
+      display: flex;
+    }
+
+    .search-box-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background-color: var(--color-bg-dark);
+      border: 2px solid var(--color-primary);
+      border-radius: var(--radius-sm);
+      padding: 0.5rem 1rem;
+    }
+
+    .search-icon {
+      width: 1.2rem;
+      height: 1.2rem;
+      fill: var(--color-primary);
+      flex-shrink: 0;
+    }
+
+    .search-input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--color-text-light);
+      font-size: 1.0rem;
+      font-family: inherit;
+    }
+
+    .search-input::placeholder {
+      color: var(--color-text-muted);
+    }
+
+    .stats-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+      padding: 0 0.2rem;
+    }
+
+    .stats-count {
+      color: var(--color-lime);
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .table-container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      width: 100%;
+    }
+
+    .table-header {
+      display: grid;
+      grid-template-columns: 2.6rem 1fr;
+      gap: 0.4rem;
+      padding: 0.4rem 0.5rem;
+      background-color: var(--color-primary);
+      border-radius: var(--radius-sm);
+      font-weight: bold;
+      font-size: 0.95rem;
+      color: var(--color-text-light);
+      align-items: center;
+    }
+
+    .header-key-icon-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .key-cap-svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      fill: currentColor;
+    }
+
+    .table-row {
+      display: grid;
+      grid-template-columns: 2.6rem 1fr;
+      gap: 0.4rem;
+      align-items: stretch;
+      background-color: var(--color-card-dark);
+      border: 2px solid var(--color-card-dark);
+      border-radius: var(--radius-sm);
+      padding: 0.3rem;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .table-row:hover {
+      border-color: var(--color-primary);
+    }
+
+    .table-row.row-active {
+      border-color: var(--color-success);
+      background-color: var(--color-card-dark);
+    }
+
+    .shortcut-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--color-accent);
+      color: var(--color-text-light);
+      border: 2px solid transparent;
+      border-radius: var(--radius-sm);
+      padding: 0.2rem 0;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: bold;
+      font-size: 1.05rem;
+      text-align: center;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+      user-select: none;
+      overflow: hidden;
+      min-height: 2.8rem;
+    }
+
+    .shortcut-btn:hover {
+      background-color: var(--color-primary);
+    }
+
+    .shortcut-btn:active {
+      transform: scale(0.96);
+    }
+
+    .shortcut-btn.btn-copied {
+      background-color: var(--color-success);
+    }
+
+    .shortcut-key-text {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      white-space: nowrap;
+      letter-spacing: 0.05rem;
+    }
+
+    .content-box {
+      display: flex;
+      align-items: center;
+      padding: 0.4rem 0.6rem;
+      font-size: 0.95rem;
+      color: var(--color-text-light);
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: normal;
+      overflow-wrap: break-word;
+      user-select: text;
+    }
+
+    .editor-section {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      background-color: var(--color-card-dark);
+      padding: 1rem;
+      border: 2px solid var(--border-highlight);
+      border-radius: var(--radius-md);
+    }
+
+    .dropzone-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 1rem;
+      background-color: var(--color-bg-dark);
+      border: 2px dashed var(--border-highlight);
+      border-radius: var(--radius-sm);
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .dropzone-area.drag-over {
+      border-color: var(--color-lime);
+      background-color: #213323;
+    }
+
+    .dropzone-icon {
+      width: 2rem;
+      height: 2rem;
+      fill: var(--color-primary);
+    }
+
+    .dropzone-actions-group {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+      width: 100%;
+    }
+
+    .file-input-hidden {
+      display: none;
+    }
+
+    .btn-choose-file {
+      background-color: var(--color-primary);
+      color: var(--color-text-light);
+      border: 2px solid transparent;
+      border-radius: var(--radius-sm);
+      padding: 0.4rem 0.8rem;
+      font-size: 0.9rem;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn-restore-file {
+      background-color: var(--color-card-dark);
+      color: var(--color-text-light);
+      border: 2px solid var(--border-highlight);
+      border-radius: var(--radius-sm);
+      padding: 0.4rem 0.8rem;
+      font-size: 0.9rem;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn-restore-file:hover {
+      border-color: var(--color-primary);
+    }
+
+    .raw-textarea {
+      width: 100%;
+      height: 14rem;
+      background-color: var(--color-bg-dark);
+      color: var(--color-text-light);
+      border: 2px solid var(--color-primary);
+      border-radius: var(--radius-sm);
+      padding: 0.8rem;
+      font-family: monospace, system-ui, sans-serif;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      resize: vertical;
+      outline: none;
+      white-space: pre;
+    }
+
+    .raw-textarea:focus {
+      border-color: var(--color-lime);
+    }
+
+    .password-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .password-label {
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: var(--color-text-light);
+    }
+
+    .password-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .password-input-box {
+      width: 100%;
+      background-color: var(--color-bg-dark);
+      color: var(--color-text-light);
+      border: 2px solid var(--border-highlight);
+      border-radius: var(--radius-sm);
+      padding: 0.6rem 2.8rem 0.6rem 0.8rem;
+      font-family: monospace, system-ui, sans-serif;
+      font-size: 1.0rem;
+      outline: none;
+    }
+
+    .password-input-box:focus {
+      border-color: var(--color-primary);
+    }
+
+    .btn-toggle-eye {
+      position: absolute;
+      right: 0.5rem;
+      background: transparent;
+      border: none;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      padding: 0.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .editor-action-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+      gap: 0.5rem;
+      width: 100%;
+    }
+
+    .btn-action-custom {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.6rem 0.5rem;
+      border: 2px solid transparent;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-weight: bold;
+      font-size: 0.95rem;
+      cursor: pointer;
+      color: var(--color-text-light);
+      user-select: none;
+      transition: transform 0.1s ease, filter 0.2s ease;
+    }
+
+    .btn-action-custom:active {
+      transform: scale(0.98);
+    }
+
+    .btn-paste {
+      background-color: var(--color-accent);
+    }
+
+    .btn-preview {
+      background-color: var(--color-warning);
+    }
+
+    .btn-export {
+      background-color: var(--color-success);
+    }
+
+    .btn-icon {
+      width: 1rem;
+      height: 1rem;
+      fill: currentColor;
+    }
+
+    .empty-state {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      background-color: var(--color-card-dark);
+      border: 2px dashed var(--border-highlight);
+      border-radius: var(--radius-md);
+      color: var(--color-text-muted);
+      text-align: center;
+      gap: 0.5rem;
+    }
+
+    /* Modal Mở Khoá */
+    .lock-modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      z-index: 2000;
+      transition: opacity 0.2s ease;
+    }
+
+    .lock-modal-backdrop.is-hidden {
+      display: none;
+    }
+
+    .lock-modal-card {
+      width: 100%;
+      max-width: 26rem;
+      background-color: var(--color-card-dark);
+      border: 2px solid var(--color-primary);
+      border-radius: var(--radius-md);
+      padding: 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      text-align: center;
+      box-shadow: 0 8px 24px var(--color-black);
+    }
+
+    .lock-avatar-icon {
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 50%;
+      background-color: var(--color-accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lock-modal-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--color-text-light);
+    }
+
+    .lock-modal-subtext {
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+    }
+
+    .lock-input-group {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .lock-modal-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+      width: 100%;
+    }
+
+    .btn-modal-unlock {
+      background-color: var(--color-primary);
+      color: var(--color-text-light);
+      border: 2px solid transparent;
+      padding: 0.6rem;
+      border-radius: var(--radius-sm);
+      font-weight: bold;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn-modal-skip {
+      background-color: var(--color-bg-dark);
+      color: var(--color-text-muted);
+      border: 2px solid var(--border-highlight);
+      padding: 0.6rem;
+      border-radius: var(--radius-sm);
+      font-weight: bold;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn-modal-skip:hover {
+      color: var(--color-text-light);
+    }
+
+    .toast-container {
+      position: fixed;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(5rem);
+      background-color: var(--color-success);
+      color: var(--color-text-light);
+      border: 2px solid var(--border-highlight);
+      border-radius: var(--radius-lg);
+      padding: 0.6rem 1rem;
+      font-size: 0.95rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 12px var(--color-black);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      z-index: 3000;
+    }
+
+    .toast-container.toast-show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .toast-icon {
+      width: 1.2rem;
+      height: 1.2rem;
+      fill: var(--color-text-light);
+    }
+
+    @media (max-width: 600px) {
+      .table-header {
+        grid-template-columns: 2.3rem 1fr;
+        font-size: 0.85rem;
+        padding: 0.35rem 0.4rem;
+      }
+
+      .table-row {
+        grid-template-columns: 2.3rem 1fr;
+      }
+
+      .shortcut-btn {
+        font-size: 0.95rem;
+      }
+
+      .content-box {
+        font-size: 0.88rem;
+        padding: 0.35rem 0.4rem;
+      }
+
+      .tab-btn {
+        font-size: 0.85rem;
+        padding: 0.5rem 0.2rem;
+      }
+
+      .stats-bar {
+        font-size: 0.82rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header-section">
+    <div class="header-top-bar">
+      <h1>GÕ TẮT</h1>
+      <button type="button" id="btnToggleLockHeader" class="btn-toggle-lock state-locked">
+        <svg id="iconLockHeader" width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"></path></svg>
+        <span id="labelLockHeader">CHƯA KHOÁ</span>
+      </button>
+    </div>
+    <div class="author-name">Dương Tấn Chánh</div>
+    <nav class="nav-tabs" role="tablist">
+      <button type="button" id="tabBtnLookup" class="tab-btn tab-active" role="tab" aria-selected="true" aria-controls="paneLookup">
+        BẢNG GÕ TẮT
+      </button>
+      <button type="button" id="tabBtnEditor" class="tab-btn" role="tab" aria-selected="false" aria-controls="paneEditor">
+        SỬA DỮ LIỆU &amp; TẠO FILE
+      </button>
+    </nav>
+  </header>
+
+  <!-- TAB 1: BẢNG GÕ TẮT -->
+  <section id="paneLookup" class="tab-pane pane-active" role="tabpanel">
+    <div class="search-box-wrapper">
+      <svg class="search-icon" viewBox="0 0 24 24">
+        <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+      </svg>
+      <input type="text" id="searchInput" class="search-input" placeholder="Nhập phím tắt hoặc nội dung để tìm kiếm nhanh..." autocomplete="off">
+    </div>
+    <div class="stats-bar">
+      <span>Nhấp vào phím tắt để sao chép nội dung tương ứng</span>
+      <span class="stats-count">Hiển thị: <span id="visibleCount">0</span> / <span id="totalCount">0</span> mục</span>
+    </div>
+
+    <main class="table-container">
+      <div class="table-header">
+        <div class="header-key-icon-wrapper" title="Phím tắt">
+          <svg class="key-cap-svg" viewBox="0 0 24 24">
+            <rect x="2" y="2" width="20" height="20" rx="4" fill="none" stroke="currentColor" stroke-width="2"></rect>
+            <text x="12" y="16.5" font-size="13" font-weight="bold" text-anchor="middle" fill="currentColor" font-family="sans-serif">A</text>
+          </svg>
+        </div>
+        <div>NỘI DUNG SAO CHÉP</div>
+      </div>
+
+      <div id="tableBody" class="table-container"></div>
+
+      <div id="emptyState" class="empty-state" style="display: flex;">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path>
+        </svg>
+        <div id="emptyStateMsg">Chưa có dữ liệu (Hãy sang Tab 2 để nạp dữ liệu và xuất file mới)!</div>
+      </div>
+    </main>
+  </section>
+
+  <!-- TAB 2: SỬA DỮ LIỆU & TẠO FILE -->
+  <section id="paneEditor" class="tab-pane" role="tabpanel">
+    <div class="editor-section">
+      <div class="stats-bar">
+        <span>Nạp dữ liệu: Mỗi dòng gồm [Phím_Tắt] [Dấu Tab] [Nội_Dung]</span>
+        <span id="editorStatsCount" class="stats-count">Đã nhận diện: 34 mục hợp lệ</span>
+      </div>
+
+      <!-- Vùng Kéo thả / Duyệt file tích hợp Khôi phục gốc -->
+      <div id="dropzoneArea" class="dropzone-area">
+        <svg class="dropzone-icon" viewBox="0 0 24 24">
+          <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"></path>
+        </svg>
+        <div>Kéo và thả tập tin văn bản (.txt, .tsv) vào đây, hoặc</div>
+        <div class="dropzone-actions-group">
+          <button type="button" id="btnChooseFile" class="btn-choose-file">📁 CHỌN TẬP TIN TỪ MÁY</button>
+          <button type="button" id="btnResetDraft" class="btn-restore-file">🔄 KHÔI PHỤC DỮ LIỆU GỐC</button>
+        </div>
+        <input type="file" id="fileInput" class="file-input-hidden" accept=".txt,.tsv,.csv,.html">
+      </div>
+
+      <!-- Ô soạn thảo văn bản thô -->
+      <textarea id="rawEditorText" class="raw-textarea" placeholder="Dán danh sách phím tắt và nội dung của bạn vào đây..."></textarea>
+
+      <!-- Ô Nhập Mật Mã Mới Cho File (BẮT BUỘC KHI XUẤT FILE) -->
+      <div class="password-form-group">
+        <label class="password-label" for="passwordForNewFile">Mật mã cho file HTML mới (Bắt buộc):</label>
+        <div class="password-input-wrapper">
+          <input type="text" id="passwordForNewFile" class="password-input-box" placeholder="Nhập mật mã để khoá và mã hoá file mới...">
+          <button type="button" id="btnToggleEyeNewPass" class="btn-toggle-eye" title="Ẩn/Hiện mật mã"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path></svg></button>
+        </div>
+      </div>
+
+      <!-- Thanh công cụ hành động -->
+      <div class="editor-action-bar">
+        <button type="button" id="btnPasteClipboard" class="btn-action-custom btn-paste">
+          <svg class="btn-icon" viewBox="0 0 24 24"><path d="M19 2h-4.18C14.4 0.84 13.3 0 12 0c-1.3 0-2.4 0.84-2.82 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 0c0.55 0 1 0.45 1 1s-0.45 1-1 1-1-0.45-1-1 0.45-1 1-1zm7 18H5V4h2v3h10V4h2v16z"></path></svg>
+          DÁN
+        </button>
+        <button type="button" id="btnApplyPreview" class="btn-action-custom btn-preview">
+          <svg class="btn-icon" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path></svg>
+          XEM THỬ
+        </button>
+        <button type="button" id="btnExportFile" class="btn-action-custom btn-export">
+          <svg class="btn-icon" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"></path></svg>
+          TẢI FILE HTML
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL MỞ KHOÁ (Chỉ xuất hiện khi mở file đã được mã hoá) -->
+  <div id="lockModalBackdrop" class="lock-modal-backdrop is-hidden">
+    <div class="lock-modal-card">
+      <div class="lock-avatar-icon">
+        <svg width="26" height="26" fill="#FFFFFF" viewBox="0 0 24 24">
+          <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"></path>
+        </svg>
+      </div>
+      <div class="lock-modal-title">GÕ TẮT - ĐÃ MÃ HOÁ AES-256</div>
+      <div class="lock-modal-subtext">Nhập mật mã để giải mã và hiển thị dữ liệu</div>
+
+      <div class="lock-input-group">
+        <div class="password-input-wrapper">
+          <input type="password" id="modalPasswordInput" class="password-input-box" placeholder="Nhập mật mã mở khoá...">
+          <button type="button" id="btnToggleEyeModal" class="btn-toggle-eye" title="Ẩn/Hiện mật mã">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="lock-modal-actions">
+        <button type="button" id="btnModalUnlock" class="btn-modal-unlock">🔓 MỞ KHOÁ</button>
+        <button type="button" id="btnModalSkip" class="btn-modal-skip">BỎ QUA</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastNotification" class="toast-container toast-show" role="status" aria-live="polite" style="background-color: var(--color-success); border-color: var(--border-highlight);">
+    <svg class="toast-icon" viewBox="0 0 24 24">
+      <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path>
+    </svg>
+    <span id="toastMessage">Đang nén Gzip &amp; Mã hoá AES-256...</span>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+
+      // Chuỗi bản mã mã hoá AES-256 (Tập tin mẫu ban đầu để trống)
+      let embeddedEncryptedPayload = "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";
+
+      let activeDataset = [];
+      let activeSessionPassword = "";
+      let isAppUnlocked = false;
+      let isPickingFile = false;
+
+      const tabBtnLookup = document.getElementById("tabBtnLookup");
+      const tabBtnEditor = document.getElementById("tabBtnEditor");
+      const paneLookup = document.getElementById("paneLookup");
+      const paneEditor = document.getElementById("paneEditor");
+
+      const btnToggleLockHeader = document.getElementById("btnToggleLockHeader");
+      const labelLockHeader = document.getElementById("labelLockHeader");
+      const iconLockHeader = document.getElementById("iconLockHeader");
+
+      const lockModalBackdrop = document.getElementById("lockModalBackdrop");
+      const modalPasswordInput = document.getElementById("modalPasswordInput");
+      const btnModalUnlock = document.getElementById("btnModalUnlock");
+      const btnModalSkip = document.getElementById("btnModalSkip");
+      const btnToggleEyeModal = document.getElementById("btnToggleEyeModal");
+
+      const tableBody = document.getElementById("tableBody");
+      const searchInput = document.getElementById("searchInput");
+      const visibleCountEl = document.getElementById("visibleCount");
+      const totalCountEl = document.getElementById("totalCount");
+      const emptyState = document.getElementById("emptyState");
+
+      const dropzoneArea = document.getElementById("dropzoneArea");
+      const btnChooseFile = document.getElementById("btnChooseFile");
+      const fileInput = document.getElementById("fileInput");
+      const rawEditorText = document.getElementById("rawEditorText");
+      const editorStatsCount = document.getElementById("editorStatsCount");
+      const passwordForNewFile = document.getElementById("passwordForNewFile");
+      const btnToggleEyeNewPass = document.getElementById("btnToggleEyeNewPass");
+      const btnResetDraft = document.getElementById("btnResetDraft");
+
+      const btnPasteClipboard = document.getElementById("btnPasteClipboard");
+      const btnApplyPreview = document.getElementById("btnApplyPreview");
+      const btnExportFile = document.getElementById("btnExportFile");
+
+      const toastNotification = document.getElementById("toastNotification");
+      const toastMessage = document.getElementById("toastMessage");
+      let toastTimer = null;
+
+      // ==========================================
+      // THUẬT TOÁN PBKDF2 + AES-GCM + GZIP
+      // ==========================================
+
+      function convertArrayBufferToBase64(buffer) {
+        const bytes = new Uint8Array(buffer);
+        let binary = '';
+        const chunkSize = 0x8000;
+        for (let i = 0; i < bytes.length; i += chunkSize) {
+          binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
+        }
+        return btoa(binary);
+      }
+
+      function convertBase64ToArrayBuffer(base64) {
+        const binaryString = atob(base64.trim().replace(/\s+/g, ''));
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+        return bytes.buffer;
+      }
+
+      async function compressWithGzip(uint8ArrayData) {
+        if (typeof CompressionStream === 'undefined') return uint8ArrayData;
+        const stream = new Blob([uint8ArrayData]).stream().pipeThrough(new CompressionStream('gzip'));
+        const response = new Response(stream);
+        const buffer = await response.arrayBuffer();
+        return new Uint8Array(buffer);
+      }
+
+      async function decompressWithGzip(uint8ArrayData) {
+        if (typeof DecompressionStream === 'undefined') return uint8ArrayData;
+        try {
+          const stream = new Blob([uint8ArrayData]).stream().pipeThrough(new DecompressionStream('gzip'));
+          const response = new Response(stream);
+          const buffer = await response.arrayBuffer();
+          return new Uint8Array(buffer);
+        } catch (err) {
+          return uint8ArrayData;
+        }
+      }
+
+      async function deriveKeyPBKDF2(password, salt) {
+        const encoder = new TextEncoder();
+        const baseKey = await window.crypto.subtle.importKey(
+          "raw",
+          encoder.encode(password),
+          "PBKDF2",
+          false,
+          ["deriveKey"]
+        );
+        return await window.crypto.subtle.deriveKey(
+          {
+            name: "PBKDF2",
+            salt: salt,
+            iterations: 600000,
+            hash: "SHA-256"
+          },
+          baseKey,
+          { name: "AES-GCM", length: 256 },
+          false,
+          ["encrypt", "decrypt"]
+        );
+      }
+
+      async function encryptDataToPayload(plainText, password) {
+        const rawBytes = new TextEncoder().encode(plainText);
+        const compressed = await compressWithGzip(rawBytes);
+        const salt = window.crypto.getRandomValues(new Uint8Array(16));
+        const iv = window.crypto.getRandomValues(new Uint8Array(12));
+        const key = await deriveKeyPBKDF2(password, salt);
+
+        const ciphertextBuffer = await window.crypto.subtle.encrypt(
+          { name: "AES-GCM", iv: iv },
+          key,
+          compressed
+        );
+
+        const combined = new Uint8Array(salt.length + iv.length + ciphertextBuffer.byteLength);
+        combined.set(salt, 0);
+        combined.set(iv, salt.length);
+        combined.set(new Uint8Array(ciphertextBuffer), salt.length + iv.length);
+
+        return convertArrayBufferToBase64(combined.buffer);
+      }
+
+      async function decryptPayloadToText(base64Payload, password) {
+        const combinedBytes = new Uint8Array(convertBase64ToArrayBuffer(base64Payload));
+        if (combinedBytes.length < 28) throw new Error("Dữ liệu bản mã không hợp lệ!");
+
+        const salt = combinedBytes.slice(0, 16);
+        const iv = combinedBytes.slice(16, 28);
+        const ciphertext = combinedBytes.slice(28);
+
+        const key = await deriveKeyPBKDF2(password, salt);
+        const decryptedBuffer = await window.crypto.subtle.decrypt(
+          { name: "AES-GCM", iv: iv },
+          key,
+          ciphertext
+        );
+
+        const decompressedBytes = await decompressWithGzip(new Uint8Array(decryptedBuffer));
+        return new TextDecoder().decode(decompressedBytes);
+      }
+
+      // ==========================================
+      // QUẢN LÝ KHOÁ, MỞ KHOÁ VÀ MÃ HOÁ BẢN NHÁP
+      // ==========================================
+
+      function openUnlockModal() {
+        lockModalBackdrop.classList.remove("is-hidden");
+        modalPasswordInput.value = "";
+        setTimeout(() => modalPasswordInput.focus(), 100);
+      }
+
+      function closeUnlockModal() {
+        lockModalBackdrop.classList.add("is-hidden");
+      }
+
+      async function lockApplication() {
+        // Chỉ mã hoá bản nháp nếu đã có mật mã làm việc
+        const currentDraftText = rawEditorText.value.trim();
+        if (currentDraftText && activeSessionPassword) {
+          try {
+            const encryptedDraft = await encryptDataToPayload(currentDraftText, activeSessionPassword);
+            sessionStorage.setItem("draft_encrypted_payload", encryptedDraft);
+          } catch (e) {}
+        }
+
+        isAppUnlocked = false;
+        activeDataset = [];
+        rawEditorText.value = "";
+        passwordForNewFile.value = "";
+        renderTable([]);
+
+        btnToggleLockHeader.className = "btn-toggle-lock state-locked";
+        labelLockHeader.textContent = "MỞ KHOÁ";
+        iconLockHeader.innerHTML = '<path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>';
+
+        showToast("Đã khoá và xoá dữ liệu an toàn!");
+      }
+
+      async function attemptUnlock(enteredPassword) {
+        if (!enteredPassword) {
+          showToast("Vui lòng nhập mật mã!", true);
+          return false;
+        }
+
+        try {
+          if (!embeddedEncryptedPayload || embeddedEncryptedPayload.trim() === "") {
+            showToast("Tập tin mẫu chưa có dữ liệu mã hoá!");
+            closeUnlockModal();
+            return false;
+          }
+
+          const jsonText = await decryptPayloadToText(embeddedEncryptedPayload, enteredPassword);
+          const parsedData = JSON.parse(jsonText);
+          activeDataset = parsedData;
+          activeSessionPassword = enteredPassword;
+          isAppUnlocked = true;
+
+          const savedDraft = sessionStorage.getItem("draft_encrypted_payload");
+          let restoredDraftText = "";
+          if (savedDraft) {
+            try {
+              restoredDraftText = await decryptPayloadToText(savedDraft, enteredPassword);
+            } catch (e) {}
+          }
+
+          if (restoredDraftText) {
+            rawEditorText.value = restoredDraftText;
+            updateEditorStats();
+            activeDataset = parseRawText(restoredDraftText);
+          } else {
+            updateRawTextareaFromDataset();
+          }
+
+          passwordForNewFile.value = activeSessionPassword;
+
+          renderTable(activeDataset);
+          closeUnlockModal();
+
+          btnToggleLockHeader.className = "btn-toggle-lock state-unlocked";
+          labelLockHeader.textContent = "KHOÁ LẠI";
+          iconLockHeader.innerHTML = '<path d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10z"/>';
+
+          showToast("Mở khoá thành công!");
+          return true;
+        } catch (err) {
+          showToast("Mật mã không đúng. Vui lòng thử lại!", true);
+          return false;
+        }
+      }
+
+      btnToggleLockHeader.addEventListener("click", function () {
+        if (embeddedEncryptedPayload && embeddedEncryptedPayload.trim() !== "") {
+          if (isAppUnlocked) {
+            lockApplication();
+            openUnlockModal();
+          } else {
+            openUnlockModal();
+          }
+        } else {
+          showToast("Tập tin mẫu chưa có dữ liệu để khoá. Hãy dán dữ liệu ở Tab 2!");
+        }
+      });
+
+      btnModalUnlock.addEventListener("click", function () {
+        attemptUnlock(modalPasswordInput.value);
+      });
+
+      modalPasswordInput.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          attemptUnlock(modalPasswordInput.value);
+        }
+      });
+
+      btnModalSkip.addEventListener("click", function () {
+        closeUnlockModal();
+        isAppUnlocked = false;
+        renderTable([]);
+        showToast("Đã bỏ qua. Bảng dữ liệu hiện đang trống.");
+      });
+
+      // Tự động khoá & mở hộp thoại mật khẩu khi mất Focus
+      function handleWindowBlurOrHide() {
+        if (isPickingFile) return;
+        if (embeddedEncryptedPayload && embeddedEncryptedPayload.trim() !== "") {
+          if (isAppUnlocked) {
+            lockApplication();
+            openUnlockModal();
+          }
+        }
+      }
+
+      window.addEventListener("blur", handleWindowBlurOrHide);
+      document.addEventListener("visibilitychange", function () {
+        if (document.hidden) {
+          handleWindowBlurOrHide();
+        }
+      });
+
+      window.addEventListener("focus", function () {
+        setTimeout(() => { isPickingFile = false; }, 500);
+      });
+
+      function togglePasswordInput(inputEl, btnEl) {
+        if (inputEl.type === "password") {
+          inputEl.type = "text";
+          btnEl.innerHTML = '<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" /></svg>';
+        } else {
+          inputEl.type = "password";
+          btnEl.innerHTML = '<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>';
+        }
+      }
+
+      btnToggleEyeModal.addEventListener("click", () => togglePasswordInput(modalPasswordInput, btnToggleEyeModal));
+      btnToggleEyeNewPass.addEventListener("click", () => togglePasswordInput(passwordForNewFile, btnToggleEyeNewPass));
+
+      btnResetDraft.addEventListener("click", function (e) {
+        e.stopPropagation();
+        sessionStorage.removeItem("draft_encrypted_payload");
+        updateRawTextareaFromDataset();
+        showToast("Đã khôi phục dữ liệu gốc ban đầu!");
+      });
+
+      // ==========================================
+      // CHUYỂN TAB & HIỂN THỊ DỮ LIỆU
+      // ==========================================
+
+      function switchTab(target) {
+        if (target === "lookup") {
+          tabBtnLookup.classList.add("tab-active");
+          tabBtnLookup.setAttribute("aria-selected", "true");
+          tabBtnEditor.classList.remove("tab-active");
+          tabBtnEditor.setAttribute("aria-selected", "false");
+          paneLookup.classList.add("pane-active");
+          paneEditor.classList.remove("pane-active");
+        } else {
+          tabBtnEditor.classList.add("tab-active");
+          tabBtnEditor.setAttribute("aria-selected", "true");
+          tabBtnLookup.classList.remove("tab-active");
+          tabBtnLookup.setAttribute("aria-selected", "false");
+          paneEditor.classList.add("pane-active");
+          paneLookup.classList.remove("pane-active");
+          if (!rawEditorText.value.trim() && isAppUnlocked && activeDataset.length > 0) {
+            updateRawTextareaFromDataset();
+          }
+        }
+      }
+
+      tabBtnLookup.addEventListener("click", () => switchTab("lookup"));
+      tabBtnEditor.addEventListener("click", () => switchTab("editor"));
+
+      function renderTable(items) {
+        tableBody.innerHTML = "";
+
+        if (items.length === 0) {
+          emptyState.style.display = "flex";
+        } else {
+          emptyState.style.display = "none";
+        }
+
+        items.forEach((item, index) => {
+          const row = document.createElement("div");
+          row.className = "table-row";
+          row.id = "row-" + index;
+
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "shortcut-btn";
+          btn.setAttribute("aria-label", "Sao chép phím tắt " + item.key);
+
+          const keySpan = document.createElement("span");
+          keySpan.className = "shortcut-key-text";
+          keySpan.textContent = item.key;
+
+          btn.appendChild(keySpan);
+
+          const contentBox = document.createElement("div");
+          contentBox.className = "content-box";
+          contentBox.textContent = item.value;
+
+          btn.addEventListener("click", function () {
+            copyToClipboard(item.value, item.key, btn, row);
+          });
+
+          row.appendChild(btn);
+          row.appendChild(contentBox);
+          tableBody.appendChild(row);
+        });
+
+        visibleCountEl.textContent = items.length;
+        totalCountEl.textContent = activeDataset.length;
+      }
+
+      function copyToClipboard(textToCopy, shortcutKey, buttonElement, rowElement) {
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(textToCopy).then(function () {
+            handleCopySuccess(shortcutKey, buttonElement, rowElement);
+          }).catch(function () {
+            fallbackCopy(textToCopy, shortcutKey, buttonElement, rowElement);
+          });
+        } else {
+          fallbackCopy(textToCopy, shortcutKey, buttonElement, rowElement);
+        }
+      }
+
+      function fallbackCopy(textToCopy, shortcutKey, buttonElement, rowElement) {
+        try {
+          const textArea = document.createElement("textarea");
+          textArea.value = textToCopy;
+          textArea.style.position = "fixed";
+          textArea.style.left = "-999999px";
+          textArea.style.top = "-999999px";
+          document.body.appendChild(textArea);
+          textArea.focus();
+          textArea.select();
+          const successful = document.execCommand("copy");
+          document.body.removeChild(textArea);
+
+          if (successful) {
+            handleCopySuccess(shortcutKey, buttonElement, rowElement);
+          } else {
+            showToast("Lỗi: Không thể tự động sao chép!", true);
+          }
+        } catch (err) {
+          showToast("Lỗi hệ thống khi sao chép!", true);
+        }
+      }
+
+      function handleCopySuccess(shortcutKey, buttonElement, rowElement) {
+        buttonElement.classList.add("btn-copied");
+        rowElement.classList.add("row-active");
+
+        showToast("Đã sao chép [" + shortcutKey + "] vào bộ nhớ!");
+
+        setTimeout(function () {
+          buttonElement.classList.remove("btn-copied");
+          rowElement.classList.remove("row-active");
+        }, 1500);
+      }
+
+      function showToast(message, isError) {
+        if (toastTimer) {
+          clearTimeout(toastTimer);
+        }
+
+        toastMessage.textContent = message;
+        if (isError) {
+          toastNotification.style.backgroundColor = "var(--color-danger)";
+          toastNotification.style.borderColor = "#FFFFFF";
+        } else {
+          toastNotification.style.backgroundColor = "var(--color-success)";
+          toastNotification.style.borderColor = "var(--border-highlight)";
+        }
+
+        toastNotification.classList.add("toast-show");
+
+        toastTimer = setTimeout(function () {
+          toastNotification.classList.remove("toast-show");
+        }, 2200);
+      }
+
+      function handleSearch() {
+        const query = searchInput.value.trim().toLowerCase();
+        if (!query) {
+          renderTable(activeDataset);
+          return;
+        }
+
+        const filtered = activeDataset.filter(function (item) {
+          const matchKey = item.key.toLowerCase().includes(query);
+          const matchValue = item.value.toLowerCase().includes(query);
+          return matchKey || matchValue;
+        });
+
+        renderTable(filtered);
+      }
+
+      searchInput.addEventListener("input", handleSearch);
+
+      function parseRawText(rawText) {
+        const lines = rawText.split(/\r?\n/);
+        const parsedItems = [];
+
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i].trim();
+          if (!line || line.startsWith("#")) continue;
+
+          let key = "";
+          let value = "";
+          const tabIndex = line.indexOf("\t");
+
+          if (tabIndex !== -1) {
+            key = line.substring(0, tabIndex).trim();
+            value = line.substring(tabIndex + 1).trim();
+          } else {
+            const spaceMatch = line.match(/^(\S+)\s+(.+)$/);
+            if (spaceMatch) {
+              key = spaceMatch[1].trim();
+              value = spaceMatch[2].trim();
+            }
+          }
+
+          if (key && value) {
+            value = value.replace(/\\n/g, "\n");
+            parsedItems.push({ key: key, value: value });
+          }
+        }
+
+        return parsedItems;
+      }
+
+      function updateRawTextareaFromDataset() {
+        const formatted = activeDataset.map(item => {
+          const safeVal = item.value.replace(/\n/g, "\\n");
+          return item.key + "\t" + safeVal;
+        }).join("\n");
+        rawEditorText.value = formatted;
+        updateEditorStats();
+      }
+
+      function updateEditorStats() {
+        const parsed = parseRawText(rawEditorText.value);
+        editorStatsCount.textContent = "Đã nhận diện: " + parsed.length + " mục hợp lệ";
+      }
+
+      rawEditorText.addEventListener("input", updateEditorStats);
+
+      btnPasteClipboard.addEventListener("click", async function () {
+        try {
+          if (navigator.clipboard && navigator.clipboard.readText) {
+            const clipText = await navigator.clipboard.readText();
+            if (clipText) {
+              rawEditorText.value = clipText;
+              updateEditorStats();
+              showToast("Đã dán dữ liệu từ bộ nhớ tạm!");
+              return;
+            }
+          }
+          showToast("Vui lòng nhấn Ctrl+V trực tiếp vào ô soạn thảo!", true);
+        } catch (err) {
+          showToast("Vui lòng nhấn Ctrl+V trực tiếp vào ô soạn thảo!", true);
+        }
+      });
+
+      btnApplyPreview.addEventListener("click", function () {
+        const parsed = parseRawText(rawEditorText.value);
+        if (parsed.length === 0) {
+          showToast("Không tìm thấy dữ liệu hợp lệ để áp dụng!", true);
+          return;
+        }
+        activeDataset = parsed;
+        renderTable(activeDataset);
+        switchTab("lookup");
+        showToast("Đã cập nhật bảng xem thử với " + parsed.length + " mục!");
+      });
+
+      btnChooseFile.addEventListener("click", function (e) {
+        e.stopPropagation();
+        isPickingFile = true;
+        fileInput.click();
+      });
+
+      fileInput.addEventListener("change", function (e) {
+        isPickingFile = false;
+        const file = e.target.files[0];
+        if (file) readFileContent(file);
+      });
+
+      ["dragenter", "dragover"].forEach(eventName => {
+        dropzoneArea.addEventListener(eventName, function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzoneArea.classList.add("drag-over");
+        }, false);
+      });
+
+      ["dragleave", "drop"].forEach(eventName => {
+        dropzoneArea.addEventListener(eventName, function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzoneArea.classList.remove("drag-over");
+        }, false);
+      });
+
+      dropzoneArea.addEventListener("drop", function (e) {
+        const dt = e.dataTransfer;
+        const file = dt.files[0];
+        if (file) readFileContent(file);
+      });
+
+      function readFileContent(file) {
+        const reader = new FileReader();
+        reader.onload = function (event) {
+          rawEditorText.value = event.target.result;
+          updateEditorStats();
+          showToast("Đã nạp tập tin: " + file.name);
+        };
+        reader.onerror = function () {
+          showToast("Lỗi khi đọc tập tin!", true);
+        };
+        reader.readAsText(file, "UTF-8");
+      }
+
+      // ==========================================
+      // BỘ DỌN DẸP TỐI ƯU VÀ TẠO FILE SIÊU GỌN
+      // ==========================================
+
+      btnExportFile.addEventListener("click", async function () {
+        const parsed = parseRawText(rawEditorText.value);
+        if (parsed.length === 0) {
+          showToast("Không có dữ liệu hợp lệ để tạo tập tin mới!", true);
+          return;
+        }
+
+        const newPassword = passwordForNewFile.value.trim();
+        if (!newPassword) {
+          showToast("Vui lòng nhập mật mã để bảo vệ và mã hoá file mới!", true);
+          passwordForNewFile.focus();
+          return;
+        }
+
+        try {
+          showToast("Đang nén Gzip & Mã hoá AES-256...");
+
+          const jsonPayload = JSON.stringify(parsed);
+          const newEncryptedBase64 = await encryptDataToPayload(jsonPayload, newPassword);
+
+          const fullHtml = generateCleanEncryptedStandaloneHtml(newEncryptedBase64);
+          const blob = new Blob(["\uFEFF" + fullHtml], { type: "text/html;charset=utf-8" });
+          const downloadLink = document.createElement("a");
+          downloadLink.href = URL.createObjectURL(blob);
+          downloadLink.download = "go-tat.html";
+          document.body.appendChild(downloadLink);
+          downloadLink.click();
+          document.body.removeChild(downloadLink);
+          URL.revokeObjectURL(downloadLink.href);
+
+          showToast("Đã tạo và tải về file HTML mã hoá thành công (Đã tối ưu siêu nhẹ)!");
+        } catch (err) {
+          showToast("Lỗi khi mã hoá và tạo tập tin HTML!", true);
+        }
+      });
+
+      function generateCleanEncryptedStandaloneHtml(newEncryptedPayload) {
+        const savedDraftText = rawEditorText.value;
+        const currentActiveLookup = tabBtnLookup.classList.contains("tab-active");
+        
+        // 1. Dọn sạch DOM trước khi xuất file
+        tableBody.innerHTML = "";
+        rawEditorText.value = "";
+        rawEditorText.textContent = "";
+        passwordForNewFile.value = "";
+        modalPasswordInput.value = "";
+        searchInput.value = "";
+        visibleCountEl.textContent = "0";
+        totalCountEl.textContent = "0";
+
+        // Đảm bảo Tab 1 được kích hoạt mặc định trong file mới
+        tabBtnLookup.className = "tab-btn tab-active";
+        tabBtnLookup.setAttribute("aria-selected", "true");
+        tabBtnEditor.className = "tab-btn";
+        tabBtnEditor.setAttribute("aria-selected", "false");
+        paneLookup.className = "tab-pane pane-active";
+        paneEditor.className = "tab-pane";
+
+        // 2. Chụp mã HTML sạch
+        let cleanHtml = "<!DOCTYPE html>\n<html lang=\"vi\">\n" + document.documentElement.innerHTML + "\n</html>";
+
+        // 3. Nhúng duy nhất chuỗi mã hoá AES-256 siêu nén
+        const payloadRegex = /let\s+embeddedEncryptedPayload\s*=\s*".*?";/;
+        cleanHtml = cleanHtml.replace(payloadRegex, 'let embeddedEncryptedPayload = "' + newEncryptedPayload + '";');
+
+        // 4. Khôi phục lại toàn bộ trạng thái làm việc trên màn hình
+        rawEditorText.value = savedDraftText;
+        passwordForNewFile.value = activeSessionPassword;
+        renderTable(activeDataset);
+
+        if (!currentActiveLookup) {
+          tabBtnEditor.className = "tab-btn tab-active";
+          tabBtnEditor.setAttribute("aria-selected", "true");
+          tabBtnLookup.className = "tab-btn";
+          tabBtnLookup.setAttribute("aria-selected", "false");
+          paneEditor.className = "tab-pane pane-active";
+          paneLookup.className = "tab-pane";
+        }
+
+        return cleanHtml;
+      }
+
+      // Khởi động thông minh: Chỉ mở hộp thoại mật khẩu nếu file đã có dữ liệu mã hoá
+      if (embeddedEncryptedPayload && embeddedEncryptedPayload.trim() !== "") {
+        isAppUnlocked = false;
+        openUnlockModal();
+      } else {
+        // Chế độ file mẫu sạch: Vào thẳng ứng dụng không cần mật mã
+        isAppUnlocked = true;
+        activeDataset = [];
+        renderTable([]);
+        btnToggleLockHeader.className = "btn-toggle-lock state-locked";
+        labelLockHeader.textContent = "CHƯA KHOÁ";
+      }
+    })();
+  </script>
+
+</body>
+</html>
