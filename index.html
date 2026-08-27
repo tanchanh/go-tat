@@ -84,16 +84,20 @@
       display: flex;
       align-items: center;
       gap: 0.35rem;
-      padding: 0.4rem 0.8rem;
+      padding: 0.45rem 0.85rem;
       font-family: inherit;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       font-weight: bold;
       border-radius: var(--radius-sm);
       cursor: pointer;
       border: 2px solid transparent;
       color: var(--color-text-light);
-      transition: opacity 0.2s ease;
+      transition: opacity 0.2s ease, transform 0.1s ease;
       user-select: none;
+    }
+
+    .btn-toggle-lock:active {
+      transform: scale(0.96);
     }
 
     .btn-toggle-lock.state-unlocked {
@@ -103,6 +107,12 @@
     .btn-toggle-lock.state-locked {
       background-color: var(--color-primary);
       border-color: var(--border-highlight);
+    }
+
+    .btn-toggle-lock.state-template {
+      background-color: var(--color-card-dark);
+      border-color: var(--border-highlight);
+      color: var(--color-lime);
     }
 
     .nav-tabs {
@@ -316,7 +326,7 @@
       align-items: center;
       justify-content: center;
       gap: 0.6rem;
-      padding: 1rem;
+      padding: 0.8rem 1rem;
       background-color: var(--color-bg-dark);
       border: 2px dashed var(--border-highlight);
       border-radius: var(--radius-sm);
@@ -331,8 +341,8 @@
     }
 
     .dropzone-icon {
-      width: 2rem;
-      height: 2rem;
+      width: 1.8rem;
+      height: 1.8rem;
       fill: var(--color-primary);
     }
 
@@ -377,6 +387,12 @@
       border-color: var(--color-primary);
     }
 
+    .editor-textarea-wrapper {
+      position: relative;
+      width: 100%;
+      display: flex;
+    }
+
     .raw-textarea {
       width: 100%;
       height: 14rem;
@@ -385,6 +401,7 @@
       border: 2px solid var(--color-primary);
       border-radius: var(--radius-sm);
       padding: 0.8rem;
+      padding-bottom: 3.2rem;
       font-family: monospace, system-ui, sans-serif;
       font-size: 0.95rem;
       line-height: 1.5;
@@ -395,6 +412,37 @@
 
     .raw-textarea:focus {
       border-color: var(--color-lime);
+    }
+
+    .btn-floating-tab {
+      position: absolute;
+      bottom: 0.6rem;
+      right: 2.6rem;
+      min-width: 3.5rem;
+      height: 2.3rem;
+      background-color: var(--color-accent);
+      color: var(--color-text-light);
+      border: 2px solid var(--border-highlight);
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+      z-index: 10;
+      touch-action: manipulation;
+    }
+
+    .btn-floating-tab:hover {
+      background-color: var(--color-primary);
+    }
+
+    .btn-floating-tab:active {
+      transform: scale(0.95);
     }
 
     .password-form-group {
@@ -446,7 +494,7 @@
 
     .editor-action-bar {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+      grid-template-columns: 1fr 1.3fr 2fr;
       gap: 0.5rem;
       width: 100%;
     }
@@ -456,7 +504,7 @@
       align-items: center;
       justify-content: center;
       gap: 0.4rem;
-      padding: 0.6rem 0.5rem;
+      padding: 0.65rem 0.5rem;
       border: 2px solid transparent;
       border-radius: var(--radius-sm);
       font-family: inherit;
@@ -476,7 +524,7 @@
       background-color: var(--color-accent);
     }
 
-    .btn-preview {
+    .btn-tsv {
       background-color: var(--color-warning);
     }
 
@@ -661,6 +709,10 @@
       .stats-bar {
         font-size: 0.82rem;
       }
+
+      .editor-action-bar {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -670,8 +722,8 @@
     <div class="header-top-bar">
       <h1>GÕ TẮT</h1>
       <button type="button" id="btnToggleLockHeader" class="btn-toggle-lock state-locked">
-        <svg id="iconLockHeader" width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"></path></svg>
-        <span id="labelLockHeader">CHƯA KHOÁ</span>
+        <svg id="iconLockHeader" width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10z"></path></svg>
+        <span id="labelLockHeader">MỞ KHOÁ</span>
       </button>
     </div>
     <div class="author-name">Dương Tấn Chánh</div>
@@ -691,7 +743,7 @@
       <svg class="search-icon" viewBox="0 0 24 24">
         <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
       </svg>
-      <input type="text" id="searchInput" class="search-input" placeholder="Nhập phím tắt hoặc nội dung để tìm kiếm nhanh..." autocomplete="off">
+      <input type="text" id="searchInput" class="search-input" placeholder="Nhập phím tắt hoặc nội dung để tìm kiếm (Bấm Esc để xoá)..." autocomplete="off">
     </div>
     <div class="stats-bar">
       <span>Nhấp vào phím tắt để sao chép nội dung tương ứng</span>
@@ -711,7 +763,7 @@
 
       <div id="tableBody" class="table-container"></div>
 
-      <div id="emptyState" class="empty-state" style="display: flex;">
+      <div id="emptyState" class="empty-state" style="display: none;">
         <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path>
         </svg>
@@ -724,16 +776,16 @@
   <section id="paneEditor" class="tab-pane" role="tabpanel">
     <div class="editor-section">
       <div class="stats-bar">
-        <span>Nạp dữ liệu: Mỗi dòng gồm [Phím_Tắt] [Dấu Tab] [Nội_Dung]</span>
-        <span id="editorStatsCount" class="stats-count">Đã nhận diện: 34 mục hợp lệ</span>
+        <span>Phân cách cột bằng phím Tab hoặc dấu chấm phẩy (;): Ví dụ: ttt; Nội_dung</span>
+        <span id="editorStatsCount" class="stats-count">Đã nhận diện: 33 mục hợp lệ</span>
       </div>
 
-      <!-- Vùng Kéo thả / Duyệt file tích hợp Khôi phục gốc -->
+      <!-- Vùng Kéo thả / Duyệt file -->
       <div id="dropzoneArea" class="dropzone-area">
         <svg class="dropzone-icon" viewBox="0 0 24 24">
           <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"></path>
         </svg>
-        <div>Kéo và thả tập tin văn bản (.txt, .tsv) vào đây, hoặc</div>
+        <div>Kéo thả tập tin văn bản (.txt, .tsv) vào đây, hoặc</div>
         <div class="dropzone-actions-group">
           <button type="button" id="btnChooseFile" class="btn-choose-file">📁 CHỌN TẬP TIN TỪ MÁY</button>
           <button type="button" id="btnResetDraft" class="btn-restore-file">🔄 KHÔI PHỤC DỮ LIỆU GỐC</button>
@@ -741,27 +793,30 @@
         <input type="file" id="fileInput" class="file-input-hidden" accept=".txt,.tsv,.csv,.html">
       </div>
 
-      <!-- Ô soạn thảo văn bản thô -->
-      <textarea id="rawEditorText" class="raw-textarea" placeholder="Dán danh sách phím tắt và nội dung của bạn vào đây..."></textarea>
+      <!-- Ô soạn thảo văn bản thô CÓ NÚT TAB NỔI CÔNG THÁI HỌC (Đệm 42px) -->
+      <div class="editor-textarea-wrapper">
+        <textarea id="rawEditorText" class="raw-textarea" placeholder="Dán danh sách phím tắt và nội dung của bạn vào đây (Phân cách bằng Tab hoặc dấu chấm phẩy ;)..."></textarea>
+        <button type="button" id="btnFloatingTab" class="btn-floating-tab" title="Chèn ký tự Tab">TAB</button>
+      </div>
 
-      <!-- Ô Nhập Mật Mã Mới Cho File (BẮT BUỘC KHI XUẤT FILE) -->
+      <!-- Ô Nhập Mật Mã Mới Cho File -->
       <div class="password-form-group">
-        <label class="password-label" for="passwordForNewFile">Mật mã cho file HTML mới (Bắt buộc):</label>
+        <label class="password-label" for="passwordForNewFile">Mật mã cho file HTML mới:</label>
         <div class="password-input-wrapper">
-          <input type="text" id="passwordForNewFile" class="password-input-box" placeholder="Nhập mật mã để khoá và mã hoá file mới...">
+          <input type="text" id="passwordForNewFile" class="password-input-box" placeholder="Nhập mật mã để khoá và mã hoá file mới (Bấm Enter để tải)...">
           <button type="button" id="btnToggleEyeNewPass" class="btn-toggle-eye" title="Ẩn/Hiện mật mã"><svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path></svg></button>
         </div>
       </div>
 
-      <!-- Thanh công cụ hành động -->
+      <!-- Thanh công cụ hành động: DÁN -> TẢI FILE TSV -> TẢI FILE HTML -->
       <div class="editor-action-bar">
         <button type="button" id="btnPasteClipboard" class="btn-action-custom btn-paste">
           <svg class="btn-icon" viewBox="0 0 24 24"><path d="M19 2h-4.18C14.4 0.84 13.3 0 12 0c-1.3 0-2.4 0.84-2.82 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 0c0.55 0 1 0.45 1 1s-0.45 1-1 1-1-0.45-1-1 0.45-1 1-1zm7 18H5V4h2v3h10V4h2v16z"></path></svg>
           DÁN
         </button>
-        <button type="button" id="btnApplyPreview" class="btn-action-custom btn-preview">
-          <svg class="btn-icon" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path></svg>
-          XEM THỬ
+        <button type="button" id="btnExportTsv" class="btn-action-custom btn-tsv">
+          <svg class="btn-icon" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"></path></svg>
+          TẢI FILE TSV
         </button>
         <button type="button" id="btnExportFile" class="btn-action-custom btn-export">
           <svg class="btn-icon" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"></path></svg>
@@ -771,9 +826,9 @@
     </div>
   </section>
 
-  <!-- MODAL MỞ KHOÁ (Chỉ xuất hiện khi mở file đã được mã hoá) -->
+  <!-- MODAL MỞ KHOÁ -->
   <div id="lockModalBackdrop" class="lock-modal-backdrop is-hidden">
-    <div class="lock-modal-card">
+    <div id="lockModalCard" class="lock-modal-card">
       <div class="lock-avatar-icon">
         <svg width="26" height="26" fill="#FFFFFF" viewBox="0 0 24 24">
           <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"></path>
@@ -813,7 +868,7 @@
       "use strict";
 
       // Chuỗi bản mã mã hoá AES-256 (Tập tin mẫu ban đầu để trống)
-      let embeddedEncryptedPayload = "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";
+      let embeddedEncryptedPayload = "mXfHruTjSjKjQ/e88+tiJB7Zija0hlS2BZm7oOmEO2RnRIQAxMCJOFN1CVwg+d1PPMjjLB/OYCUedgkWuRgSomwTdek5cTlcUAknBASa6leCLqFo86qK43fRE3b9Jras7yd4qaf0ymhvif3fCa4suCUw2GGbthQZO+B4X/IeMRUTsE8uY9A2pZgzeRmxt4hi6O33SFbDS2gKfgvFkw8c8nrDLdlquXdved7D8ER/b9iJqQLv15XNxCx2eAGPi0seD61mSt291ykRv27kmlbc30Q8JUF+Sl7GGC0wp7wOIkXa5G2Oa+No37ojnmIutqMhdtXwsLD/2jBYJ0kFdf+gDNK8haKo6j0W8kEykW8/FkgtZjTFjGSiDLyxBAQ4alMkAODuLneykQ97WxU/jQLsdP1NDznO9ILXmuFP6NiqYPYlRL8aifX//2YteN07FjRGgT7CVLZVcGMJ3anvoKNUFSIxnn3fQLaxCLXPHkPE5zlQDjIp6GHtZDjEFE1fFvPKuqZ7vAeT0Opgqm8X7i+Td0v01nA1H6smxoVMkKnvzCCxgiUvcNob612BM9hWPxVfrxii0yqw2ZFTXawH3eUQV56Zb6owqK0cFGUx7387j5nNksTQa83olfotlhFytPGoXVT9+XaeiVMdkFJmWWBaJgVARji7zUlXl58STiz5fX83X8nJluVOTd2FuMDWCx9XFX2NbsmpSxKgw2lwxAfs5IOuOPUfElatnAExX3nQPLSM8xaX57KImkmvy9ZsdsoE33m+3tTOMo58vDeRlA7MahPsv3jtMw/R5b+PDDIu0oz7s3udQAYUwYxJLG7dDdvymphheNDduFpm7H8fIVe0rHj0iOwsAnzp6Q0fLk62AE6O5RwNdSwyWaVwMKeVRTSaaLWMnYqyUo3R4b9TezJ9milmTGvUTqk+VhH9qviCCUwgsOAgKq46W30YhsHjhcKMfn78sDB9/naLjGqIgxOc4tITS8myPVos9SWby7NWgH0uWEr4KqWqOQ0A5yfPBF40H6aIHHrR0Mwd7tHO7lJy8gmTZpgc92Lhn1pqEgXFsy2VLinBDzOmIYef000+iJCr7Xpe+gss8ga8irBaemXkLsYqovU6bzLhHR2OoU+XmApZTTN71fkCsjqixTsfAWT2vizN8YS+5m0oatFeTNyfwKLNJyLdwc0QsB6fQyt1nqy1tVl7OByfwEEcfp0/upPVYr673CxkTC5356zHj+idJNVpwyD+UMsJSPBBsh5xxp1CntATP3WG/98ksaxlUkBNHk2FbExdP0uUJUxrAS5MnxZbC+oCbGCmm+DdGpGrEi/uvX9xEIqxuTSiTxUxNz55F6Cq7RCUmY3u/f6fh4SvNNDpvV672laqAzm5/oOCypvYreXfSJW+eUrxbNYWipQXnQJhzU1uKeBvhDOFnEL77GdhKHxR7cyLr9mOqB/qv0a+rUDllkapbB4sWn0sY9qlWz1TNELin25bOkDREUOJcDgWJrhkvjiQGYuJ3NROVIjIdVBKjiEEBk5LACQppaoliHXqR96ayDsXw1YpBB2nJynDtbgneu3hvO+kdNHGLCacBbddxmM3uX2WEsxj2a5lgfMvXv2uklxnGrTrzacbZkL8nqy56VvM6ix9dORk6lLX6oeAswJE6UEtwslOv4gqk72JbwLQng6ly6HbgFsRHlni/syXdyzLwHL876vgvYpSH/gL/FvYe0Li0vYAhs1a13BgUQn+prz3tY2yNRqxFKlUii4TZskqshtKzcsZ1nuJFc5afaFRO5r5nQuWH5YjPaqd9AQpH34LFc/gRQTqehCS7HVhmGLkScT4H2qGxbwXak//+XuPMDc6YkG/rcGuSS9BKYgC0Z0ZvxrpL+XI71RNOPxrQy0r7QGDH3do9OtySvkRIEZ/+rgHw7gCKC+Oq2RwZ2/uUmjDRf9xsyFiSgKBvgZIJ89vOrcsPbuo4itqqIGashykjDjwFF7njyL2Ax4Z7wJKpiyug3iD4dfMbl6lEZwgs3cOcV5ORbLsdWI7qC0vok1iLvmUHpWIYJ5R7bz1F6zG+Pt4GR32kr2Nd2INlTdRdICg92htg77zzwc6Naji2ZTQf4vgNJFtSxjV6EtnJyaFdsTGjIXsiebgVwu5ohQ+Lwte0L2pq8/9Gifh3igxMkI+xevCve+2ns/TKADR4wai+HK/W0Vic5HnxSLOLzZdJp0jz+zWf9NLcHsw6VdYYUv/49Grr9hMjOFtkA2wg5dBhPXZJlnUYx36EQgoGrcF7xZlf8Q9AJGCZPKBQtlVRfklEjRAnNSa0+pVcu73k3yUqw7VHQHvO1T2N7ozn7Mkne0P/np9in9a0lvkuuoUATQSDJnDjAI1QjBR3urk4tTelLDMElRRmeufCK/KpRRGpIns4JzVIw+Peo+JjLyeF5qIQ/JpCnUaW0dWUmk3tbW4DsvXpGEhMEHsJFBab1pYAbs1jX4OsMwNE/ePYH5n8rvgNi18IqtijXMKgT8zXC/5ZZ60CqsYrrZ3JOX79ND2jSuQb6xUXu17xeSXxcS1wread0AMXdwi9PvgGNhD9syAivqzytcK2/SuRaKkl1seIVeTW2+tq3ewHaFEYKUnLlF07qWujhpuCtsMUlcjcg/366MqExi6qX951sOVsH5hu0yrATT5yEY+niRxTHMFvycsB3z7LWthE8DxhO4DVs1XzOKEzugiOboWlCw2vhV47e+jOdN7R/JZE+84y1/cxP7azbFObcE/FSs+FLnUVoOyvKedgCo3HXJDQ2RD3NXPmrSMFd24nCle7TWdlqJI79I6b3UdRO6DOHr7zh1I/j8jR5SIum83av4MIwDmhWuungMf07pWqmIsxZp4683/fc5yG2zuPU4K0or1Uf7SFP1PiagJmcExxSsm+wR4QXhrI3lKSCZBJJCktCVLqbpThfF5qe3JwpDNMrHF92nLbuNJETudjNKu0USvVHQctW6tzRYqTqSuJpj15HfMe+gsLnwgaX20HN/MO9AGVilw6BOmQ3z1sSR/BZnz1U/H+osJnmIa5997njQF3SiHp7T+fKS3alr+cKe1K97QY1RD7XH23M88wnKD0TRm1VIZP4Sw9AuoqvCpEZODaTI8xQoFEWfqRv2ntTMnS7GQZPDaravtAb1F9CR1eQBlk/hDNX9589oIe8/nJdF0yRKha9SZLqZ7/vv0B9BD691pCJ1mkcYSePJBl74Kxg+YtzW6GTfSgGIcJsNTMtnaMNGjRfkz55eFlxyUm6SUG9JpYB+XrCeK0qzYdHhEH4SH+z+E0i1g8DPNx9EWU6LkObsBg8+Uw8gNSud7m3DBKYb30/rcLBjboNIUuaC6QuS0A/lKdNtYOzLb30pHNrnlLA1wAMk7UxesS4XBcTYdFxIqPLbaJJDL75uluRYLycNcGXYgOdaSSAyUMg5tHL7WwtIuIvp+fg78Hgp/JdNjW1nFg+7KbQfKEYd2o6zpWqdTmhiMfUH6MDvn2b9097qckx5TKwTgo2OaihI5QUvyz4KtGHgvXFohqSY8C/4OoLEGu7bkvlV0Ivc4gdFiU/1vMYZLreG8TB8fK38N5b41It+RDiFh/j43nyLqOUdas8hOXz6LjH60bTasoAH6Qf1IZqcH4Nn44a46kcG3Bb3dspmD/6AXEKFP+dYyMhgn5LC24faZzT7/gbYMCbqn1CZ3j28fGXJ7/BksF+GhevzGURrq3e+pdym9ndTnSKBnp1FwBGnNJJ1hOueDfpmIiln+sTCFtNsCocEyf59X0cebPcCsKXn5Y8Dn5I6DoDsWCn0/pjlIB6cS5XaJUfGBY9relAW+X5J/MdxlX4t8QAJ6jrfCRUJ0mnqgHaBUNsqtLeaaBUKXgTv3/z06JROCNfV8OAXpXwkiELpRt63uTSB/LTcG6s8uk+7MjO+yiHCjkwPGF1eHwCAWjFxVOn0z/3OSfesMIV9vE/cVYm82Nmx1VrmMEe58eAXdrseUb435JG8iynK4hsVSHqnlqe+2xihsm8X/LMB069iZIaVEBqmfBiIZ5JFxS9Ltsjma9O55Mzt4upUle8nuAGP3nyYraOu5g8z4Ojv2QUhaJ9cmWPyqzadP/NoFWQeYGxqeV7JKvI+W8ogIfi8zKU8BIhSXsPtbIZuf0//fCC9l2uVkjwf2Fxvl9jkTq7WX/46l9K07vsVVIL2H6sApjLo3sDADqTmpRDVch6m9mQj+lEv+wQe24kVvFy1vMOYUmSrfgUgqRLT1aSx/Sn7Ifjb3oOh8PVITOnNnf1AkXxv32BhC/GWn10eod4jHQNronrmL3fjiC37R3ushkOHOQ3SwQs+NcJpt9dZEHxu2862XzdOM4yT5yzcU67ubiKVHa7imiiuFFqH1r9X+EVIC1XaV9fqhVtsH1aHyelSXK1IGueGnyp2AFG62gBUdtRZfVt8+l5abQT4/pvLeOT7SnzmGOAS/5cPzhIIVYHAxQ116JKSIDc7uAScC6/WKweXTDVpBGD9UNK50pEBCJLrrCjDg2zmFCoUvoN3Mdqli7k/RsRvZdmpbuk3s09sb/WtkN+9+y4stabjoCSIzA/GhjXTcL1jJJmBeee54rIT1V9ElOXgZrAy9UQM95zfj+asFGiCLjGOPRXYyP4pJwHbzQHf7BR7x0/ufvjidRVsLJFWc54joqvue53oK9Wfojb9USo7ifcE38i7riQ4PFLS5ISFJ/Fd+vDMM";
 
       let activeDataset = [];
       let activeSessionPassword = "";
@@ -830,6 +885,7 @@
       const iconLockHeader = document.getElementById("iconLockHeader");
 
       const lockModalBackdrop = document.getElementById("lockModalBackdrop");
+      const lockModalCard = document.getElementById("lockModalCard");
       const modalPasswordInput = document.getElementById("modalPasswordInput");
       const btnModalUnlock = document.getElementById("btnModalUnlock");
       const btnModalSkip = document.getElementById("btnModalSkip");
@@ -840,9 +896,11 @@
       const visibleCountEl = document.getElementById("visibleCount");
       const totalCountEl = document.getElementById("totalCount");
       const emptyState = document.getElementById("emptyState");
+      const emptyStateMsg = document.getElementById("emptyStateMsg");
 
       const dropzoneArea = document.getElementById("dropzoneArea");
       const btnChooseFile = document.getElementById("btnChooseFile");
+      const btnFloatingTab = document.getElementById("btnFloatingTab");
       const fileInput = document.getElementById("fileInput");
       const rawEditorText = document.getElementById("rawEditorText");
       const editorStatsCount = document.getElementById("editorStatsCount");
@@ -851,12 +909,32 @@
       const btnResetDraft = document.getElementById("btnResetDraft");
 
       const btnPasteClipboard = document.getElementById("btnPasteClipboard");
-      const btnApplyPreview = document.getElementById("btnApplyPreview");
+      const btnExportTsv = document.getElementById("btnExportTsv");
       const btnExportFile = document.getElementById("btnExportFile");
 
       const toastNotification = document.getElementById("toastNotification");
       const toastMessage = document.getElementById("toastMessage");
       let toastTimer = null;
+
+      // ==========================================
+      // CẬP NHẬT TRẠNG THÁI NÚT HEADER CHUẨN XÁC
+      // ==========================================
+
+      function updateLockHeaderState(mode) {
+        if (mode === "template") {
+          btnToggleLockHeader.className = "btn-toggle-lock state-template";
+          labelLockHeader.textContent = "FILE MẪU SẠCH";
+          iconLockHeader.innerHTML = '<path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>';
+        } else if (mode === "unlocked") {
+          btnToggleLockHeader.className = "btn-toggle-lock state-unlocked";
+          labelLockHeader.textContent = "KHOÁ LẠI";
+          iconLockHeader.innerHTML = '<path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>';
+        } else {
+          btnToggleLockHeader.className = "btn-toggle-lock state-locked";
+          labelLockHeader.textContent = "MỞ KHOÁ";
+          iconLockHeader.innerHTML = '<path d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10z"/>';
+        }
+      }
 
       // ==========================================
       // THUẬT TOÁN PBKDF2 + AES-GCM + GZIP
@@ -966,10 +1044,54 @@
       }
 
       // ==========================================
-      // QUẢN LÝ KHOÁ, MỞ KHOÁ VÀ MÃ HOÁ BẢN NHÁP
+      // XỬ LÝ CHÈN TAB VÀ BẮT PHÍM TAB TRONG TEXTAREA
       // ==========================================
 
+      function insertTabAtCursor() {
+        const start = rawEditorText.selectionStart;
+        const end = rawEditorText.selectionEnd;
+        rawEditorText.value = rawEditorText.value.substring(0, start) + "\t" + rawEditorText.value.substring(end);
+        rawEditorText.selectionStart = rawEditorText.selectionEnd = start + 1;
+        rawEditorText.focus();
+        updateEditorStats();
+      }
+
+      rawEditorText.addEventListener("keydown", function (e) {
+        if (e.key === "Tab") {
+          e.preventDefault();
+          insertTabAtCursor();
+        }
+      });
+
+      ["mousedown", "touchstart"].forEach(evtName => {
+        btnFloatingTab.addEventListener(evtName, function (e) {
+          e.preventDefault();
+          insertTabAtCursor();
+        }, { passive: false });
+      });
+
+      window.addEventListener("keydown", function (e) {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
+          e.preventDefault();
+          if (paneEditor.classList.contains("pane-active")) {
+            btnExportFile.click();
+          } else {
+            showToast("Bấm Tab 2 để tạo và xuất tập tin HTML!");
+          }
+        }
+      });
+
+      // ==========================================
+      // QUẢN LÝ KHOÁ & BẢO VỆ BẢN NHÁP TUYỆT ĐỐI
+      // ==========================================
+
+      function resetPasswordEyeState(inputEl, btnEl) {
+        inputEl.type = "password";
+        btnEl.innerHTML = '<svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>';
+      }
+
       function openUnlockModal() {
+        resetPasswordEyeState(modalPasswordInput, btnToggleEyeModal);
         lockModalBackdrop.classList.remove("is-hidden");
         modalPasswordInput.value = "";
         setTimeout(() => modalPasswordInput.focus(), 100);
@@ -977,10 +1099,15 @@
 
       function closeUnlockModal() {
         lockModalBackdrop.classList.add("is-hidden");
+        resetPasswordEyeState(modalPasswordInput, btnToggleEyeModal);
       }
 
       async function lockApplication() {
-        // Chỉ mã hoá bản nháp nếu đã có mật mã làm việc
+        if (!embeddedEncryptedPayload || embeddedEncryptedPayload.trim() === "") {
+          showToast("Đây là File Mẫu Sạch. Nhập mật mã & Tải file để tạo file mã hoá!");
+          return;
+        }
+
         const currentDraftText = rawEditorText.value.trim();
         if (currentDraftText && activeSessionPassword) {
           try {
@@ -993,13 +1120,11 @@
         activeDataset = [];
         rawEditorText.value = "";
         passwordForNewFile.value = "";
+        searchInput.value = "";
         renderTable([]);
 
-        btnToggleLockHeader.className = "btn-toggle-lock state-locked";
-        labelLockHeader.textContent = "MỞ KHOÁ";
-        iconLockHeader.innerHTML = '<path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>';
-
-        showToast("Đã khoá và xoá dữ liệu an toàn!");
+        updateLockHeaderState("locked");
+        showToast("Đã khoá và giấu dữ liệu an toàn!");
       }
 
       async function attemptUnlock(enteredPassword) {
@@ -1010,9 +1135,10 @@
 
         try {
           if (!embeddedEncryptedPayload || embeddedEncryptedPayload.trim() === "") {
-            showToast("Tập tin mẫu chưa có dữ liệu mã hoá!");
+            isAppUnlocked = true;
+            updateLockHeaderState("template");
             closeUnlockModal();
-            return false;
+            return true;
           }
 
           const jsonText = await decryptPayloadToText(embeddedEncryptedPayload, enteredPassword);
@@ -1038,13 +1164,11 @@
           }
 
           passwordForNewFile.value = activeSessionPassword;
+          searchInput.value = "";
 
           renderTable(activeDataset);
           closeUnlockModal();
-
-          btnToggleLockHeader.className = "btn-toggle-lock state-unlocked";
-          labelLockHeader.textContent = "KHOÁ LẠI";
-          iconLockHeader.innerHTML = '<path d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10z"/>';
+          updateLockHeaderState("unlocked");
 
           showToast("Mở khoá thành công!");
           return true;
@@ -1055,15 +1179,15 @@
       }
 
       btnToggleLockHeader.addEventListener("click", function () {
-        if (embeddedEncryptedPayload && embeddedEncryptedPayload.trim() !== "") {
-          if (isAppUnlocked) {
-            lockApplication();
-            openUnlockModal();
-          } else {
-            openUnlockModal();
-          }
+        if (!embeddedEncryptedPayload || embeddedEncryptedPayload.trim() === "") {
+          showToast("File mẫu đang mở. Dán dữ liệu & bấm 'TẢI FILE HTML' để tạo file mã hoá!");
+          return;
+        }
+
+        if (isAppUnlocked) {
+          lockApplication();
         } else {
-          showToast("Tập tin mẫu chưa có dữ liệu để khoá. Hãy dán dữ liệu ở Tab 2!");
+          openUnlockModal();
         }
       });
 
@@ -1077,20 +1201,46 @@
         }
       });
 
+      passwordForNewFile.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          btnExportFile.click();
+        }
+      });
+
+      window.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && !lockModalBackdrop.classList.contains("is-hidden")) {
+          closeUnlockModal();
+          isAppUnlocked = false;
+          updateLockHeaderState("locked");
+          renderTable([]);
+          showToast("Đã bỏ qua. Bảng dữ liệu hiện đang trống.");
+        }
+      });
+
       btnModalSkip.addEventListener("click", function () {
         closeUnlockModal();
         isAppUnlocked = false;
+        updateLockHeaderState("locked");
         renderTable([]);
         showToast("Đã bỏ qua. Bảng dữ liệu hiện đang trống.");
       });
 
-      // Tự động khoá & mở hộp thoại mật khẩu khi mất Focus
+      lockModalBackdrop.addEventListener("click", function (e) {
+        if (e.target === lockModalBackdrop) {
+          closeUnlockModal();
+          isAppUnlocked = false;
+          updateLockHeaderState("locked");
+          renderTable([]);
+          showToast("Đã bỏ qua. Bảng dữ liệu hiện đang trống.");
+        }
+      });
+
       function handleWindowBlurOrHide() {
         if (isPickingFile) return;
         if (embeddedEncryptedPayload && embeddedEncryptedPayload.trim() !== "") {
           if (isAppUnlocked) {
             lockApplication();
-            openUnlockModal();
           }
         }
       }
@@ -1121,13 +1271,24 @@
 
       btnResetDraft.addEventListener("click", function (e) {
         e.stopPropagation();
-        sessionStorage.removeItem("draft_encrypted_payload");
-        updateRawTextareaFromDataset();
-        showToast("Đã khôi phục dữ liệu gốc ban đầu!");
+        if (embeddedEncryptedPayload && embeddedEncryptedPayload.trim() !== "") {
+          if (!isAppUnlocked) {
+            openUnlockModal();
+            showToast("Vui lòng nhập mật mã để mở khoá và khôi phục dữ liệu!", true);
+            return;
+          }
+          sessionStorage.removeItem("draft_encrypted_payload");
+          updateRawTextareaFromDataset();
+          activeDataset = parseRawText(rawEditorText.value);
+          renderTable(activeDataset);
+          showToast("Đã khôi phục dữ liệu gốc ban đầu!");
+        } else {
+          showToast("Tập tin mẫu chưa có dữ liệu gốc để khôi phục!");
+        }
       });
 
       // ==========================================
-      // CHUYỂN TAB & HIỂN THỊ DỮ LIỆU
+      // CHUYỂN TAB & TỰ ĐỘNG ĐỒNG BỘ DỮ LIỆU
       // ==========================================
 
       function switchTab(target) {
@@ -1138,6 +1299,12 @@
           tabBtnEditor.setAttribute("aria-selected", "false");
           paneLookup.classList.add("pane-active");
           paneEditor.classList.remove("pane-active");
+
+          if (isAppUnlocked) {
+            const rawContent = rawEditorText.value.trim();
+            activeDataset = rawContent ? parseRawText(rawContent) : [];
+            renderTable(activeDataset);
+          }
         } else {
           tabBtnEditor.classList.add("tab-active");
           tabBtnEditor.setAttribute("aria-selected", "true");
@@ -1159,6 +1326,11 @@
 
         if (items.length === 0) {
           emptyState.style.display = "flex";
+          if (activeDataset.length > 0) {
+            emptyStateMsg.textContent = "Không tìm thấy phím tắt hoặc nội dung phù hợp với từ khoá tìm kiếm!";
+          } else {
+            emptyStateMsg.textContent = "Chưa có dữ liệu (Hãy sang Tab 2 để nạp dữ liệu và xuất file mới)!";
+          }
         } else {
           emptyState.style.display = "none";
         }
@@ -1282,6 +1454,13 @@
 
       searchInput.addEventListener("input", handleSearch);
 
+      searchInput.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+          this.value = "";
+          renderTable(activeDataset);
+        }
+      });
+
       function parseRawText(rawText) {
         const lines = rawText.split(/\r?\n/);
         const parsedItems = [];
@@ -1293,10 +1472,14 @@
           let key = "";
           let value = "";
           const tabIndex = line.indexOf("\t");
+          const semiIndex = line.indexOf(";");
 
           if (tabIndex !== -1) {
             key = line.substring(0, tabIndex).trim();
             value = line.substring(tabIndex + 1).trim();
+          } else if (semiIndex !== -1) {
+            key = line.substring(0, semiIndex).trim();
+            value = line.substring(semiIndex + 1).trim();
           } else {
             const spaceMatch = line.match(/^(\S+)\s+(.+)$/);
             if (spaceMatch) {
@@ -1347,16 +1530,39 @@
         }
       });
 
-      btnApplyPreview.addEventListener("click", function () {
-        const parsed = parseRawText(rawEditorText.value);
-        if (parsed.length === 0) {
-          showToast("Không tìm thấy dữ liệu hợp lệ để áp dụng!", true);
+      // Tải tập tin dạng TSV & Đồng bộ RAM tức thì
+      btnExportTsv.addEventListener("click", function () {
+        const rawContent = rawEditorText.value.trim();
+        let exportItems = [];
+        if (rawContent) {
+          exportItems = parseRawText(rawContent);
+        } else if (activeDataset && activeDataset.length > 0) {
+          exportItems = activeDataset;
+        }
+
+        if (exportItems.length === 0) {
+          showToast("Không có dữ liệu để xuất tập tin TSV!", true);
           return;
         }
-        activeDataset = parsed;
-        renderTable(activeDataset);
-        switchTab("lookup");
-        showToast("Đã cập nhật bảng xem thử với " + parsed.length + " mục!");
+
+        // Đồng bộ RAM tức thì
+        activeDataset = exportItems;
+
+        const tsvContent = exportItems.map(item => {
+          const safeVal = item.value.replace(/\n/g, "\\n");
+          return item.key + "\t" + safeVal;
+        }).join("\n");
+
+        const blob = new Blob(["\uFEFF" + tsvContent], { type: "text/tab-separated-values;charset=utf-8" });
+        const downloadLink = document.createElement("a");
+        downloadLink.href = URL.createObjectURL(blob);
+        downloadLink.download = "go-tat.tsv";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+        URL.revokeObjectURL(downloadLink.href);
+
+        showToast("Đã tải về tập tin TSV thành công!");
       });
 
       btnChooseFile.addEventListener("click", function (e) {
@@ -1371,26 +1577,34 @@
         if (file) readFileContent(file);
       });
 
-      ["dragenter", "dragover"].forEach(eventName => {
-        dropzoneArea.addEventListener(eventName, function (e) {
-          e.preventDefault();
-          e.stopPropagation();
-          dropzoneArea.classList.add("drag-over");
-        }, false);
+      fileInput.addEventListener("cancel", function () {
+        setTimeout(() => { isPickingFile = false; }, 300);
       });
 
-      ["dragleave", "drop"].forEach(eventName => {
-        dropzoneArea.addEventListener(eventName, function (e) {
-          e.preventDefault();
-          e.stopPropagation();
-          dropzoneArea.classList.remove("drag-over");
-        }, false);
-      });
+      [dropzoneArea, rawEditorText].forEach(targetEl => {
+        ["dragenter", "dragover"].forEach(eventName => {
+          targetEl.addEventListener(eventName, function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzoneArea.classList.add("drag-over");
+          }, false);
+        });
 
-      dropzoneArea.addEventListener("drop", function (e) {
-        const dt = e.dataTransfer;
-        const file = dt.files[0];
-        if (file) readFileContent(file);
+        ["dragleave", "drop"].forEach(eventName => {
+          targetEl.addEventListener(eventName, function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            dropzoneArea.classList.remove("drag-over");
+          }, false);
+        });
+
+        targetEl.addEventListener("drop", function (e) {
+          const dt = e.dataTransfer;
+          if (dt && dt.files && dt.files.length > 0) {
+            const file = dt.files[0];
+            readFileContent(file);
+          }
+        });
       });
 
       function readFileContent(file) {
@@ -1430,6 +1644,10 @@
           const jsonPayload = JSON.stringify(parsed);
           const newEncryptedBase64 = await encryptDataToPayload(jsonPayload, newPassword);
 
+          // Đồng bộ RAM và Mật mã phiên tức thì
+          activeDataset = parsed;
+          activeSessionPassword = newPassword;
+
           const fullHtml = generateCleanEncryptedStandaloneHtml(newEncryptedBase64);
           const blob = new Blob(["\uFEFF" + fullHtml], { type: "text/html;charset=utf-8" });
           const downloadLink = document.createElement("a");
@@ -1440,7 +1658,7 @@
           document.body.removeChild(downloadLink);
           URL.revokeObjectURL(downloadLink.href);
 
-          showToast("Đã tạo và tải về file HTML mã hoá thành công (Đã tối ưu siêu nhẹ)!");
+          showToast("Đã tạo và tải về file HTML mã hoá thành công!");
         } catch (err) {
           showToast("Lỗi khi mã hoá và tạo tập tin HTML!", true);
         }
@@ -1450,7 +1668,6 @@
         const savedDraftText = rawEditorText.value;
         const currentActiveLookup = tabBtnLookup.classList.contains("tab-active");
         
-        // 1. Dọn sạch DOM trước khi xuất file
         tableBody.innerHTML = "";
         rawEditorText.value = "";
         rawEditorText.textContent = "";
@@ -1460,7 +1677,6 @@
         visibleCountEl.textContent = "0";
         totalCountEl.textContent = "0";
 
-        // Đảm bảo Tab 1 được kích hoạt mặc định trong file mới
         tabBtnLookup.className = "tab-btn tab-active";
         tabBtnLookup.setAttribute("aria-selected", "true");
         tabBtnEditor.className = "tab-btn";
@@ -1468,14 +1684,15 @@
         paneLookup.className = "tab-pane pane-active";
         paneEditor.className = "tab-pane";
 
-        // 2. Chụp mã HTML sạch
+        updateLockHeaderState("locked");
+
         let cleanHtml = "<!DOCTYPE html>\n<html lang=\"vi\">\n" + document.documentElement.innerHTML + "\n</html>";
 
-        // 3. Nhúng duy nhất chuỗi mã hoá AES-256 siêu nén
-        const payloadRegex = /let\s+embeddedEncryptedPayload\s*=\s*".*?";/;
-        cleanHtml = cleanHtml.replace(payloadRegex, 'let embeddedEncryptedPayload = "' + newEncryptedPayload + '";');
+        const payloadRegex = /let\s+embeddedEncryptedPayload\s*=\s*"[^"]*";/;
+        cleanHtml = cleanHtml.replace(payloadRegex, function () {
+          return 'let embeddedEncryptedPayload = "' + newEncryptedPayload + '";';
+        });
 
-        // 4. Khôi phục lại toàn bộ trạng thái làm việc trên màn hình
         rawEditorText.value = savedDraftText;
         passwordForNewFile.value = activeSessionPassword;
         renderTable(activeDataset);
@@ -1489,20 +1706,25 @@
           paneLookup.className = "tab-pane";
         }
 
+        if (embeddedEncryptedPayload && embeddedEncryptedPayload.trim() !== "") {
+          updateLockHeaderState(isAppUnlocked ? "unlocked" : "locked");
+        } else {
+          updateLockHeaderState("template");
+        }
+
         return cleanHtml;
       }
 
-      // Khởi động thông minh: Chỉ mở hộp thoại mật khẩu nếu file đã có dữ liệu mã hoá
+      // Khởi động thông minh theo chế độ file
       if (embeddedEncryptedPayload && embeddedEncryptedPayload.trim() !== "") {
         isAppUnlocked = false;
+        updateLockHeaderState("locked");
         openUnlockModal();
       } else {
-        // Chế độ file mẫu sạch: Vào thẳng ứng dụng không cần mật mã
         isAppUnlocked = true;
         activeDataset = [];
         renderTable([]);
-        btnToggleLockHeader.className = "btn-toggle-lock state-locked";
-        labelLockHeader.textContent = "CHƯA KHOÁ";
+        updateLockHeaderState("template");
       }
     })();
   </script>
