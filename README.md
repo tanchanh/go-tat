@@ -1,115 +1,92 @@
-# ⚡ GÕ TẮT - BẢNG TRA CỨU & SAO CHÉP NHANH MÃ HOÁ AES-256
+# GÕ TẮT (TEXT EXPANSION & SECURE VAULT)
 
-> **Ứng dụng Single-Page (1 tập tin HTML duy nhất) chạy hoàn toàn Offline, tích hợp chuẩn mã hoá quân sự AES-256 kết hợp nén Gzip và cơ chế tự đóng gói tập tin độc lập.**
-
----
-
-## 📌 GIỚI THIỆU
-
-**GÕ TẮT** là công cụ hỗ trợ công việc hàng ngày, giúp bạn lưu trữ, quản lý, tra cứu và sao chép 1-chạm các phím tắt, câu lệnh mẫu (AI prompts), thông tin cá nhân, mẫu văn bản hành chính...
-
-Chương trình được thiết kế chạy trực tiếp trên mọi trình duyệt (máy tính và điện thoại) mà không cần cài đặt, không phụ thuộc internet và **không gửi bất kỳ dữ liệu nào ra máy chủ bên ngoài**.
+**Tác giả:** Dương Tấn Chánh  
+**Chuẩn mã hoá:** AES-256-GCM & PBKDF2 (Chuẩn định dạng `DTC_ENC_01`)  
+**Kiến trúc:** Ứng dụng Web Single-Page (Độc lập, Offline 100%, Không qua máy chủ)
 
 ---
 
-## ✨ TÍNH NĂNG NỔI BẬT
+## 1. GIỚI THIỆU TỔNG QUAN
 
-### 🛡️ 1. Bảo mật chuẩn quân sự AES-256-GCM
+**GÕ TẮT** là phần mềm quản lý, tra cứu và sao chép nhanh danh sách phím tắt văn bản cá nhân hoá, được thiết kế tối ưu cho hiệu suất làm việc văn phòng và bảo mật dữ liệu tuyệt đối. 
 
-- **Dẫn xuất khoá an toàn**: Sử dụng thuật toán PBKDF2 với **600.000 vòng lặp (iterations)** và băm SHA-256 chống lại mọi hình thức tấn công dò mật mã (Brute-force bằng GPU).
-
-- **Mã hoá có xác thực**: AES-GCM 256-bit phát hiện ngay lập tức nếu nhập sai mật mã hoặc tập tin bị chỉnh sửa.
-
-- **Nén Gzip tự động**: Dữ liệu được nén Gzip trước khi mã hoá, giúp tập tin cá nhân siêu nhẹ (chỉ khoảng 15 KB – 20 KB).
+Ứng dụng sở hữu cơ chế **Tự nhân bản độc lập (Standalone Self-Cloning)**: Cho phép người dùng trực tiếp soạn thảo dữ liệu, đặt mật mã và xuất ra một tập tin `index.html` mới đã được mã hoá toàn diện. Tập tin mới này chứa trọn vẹn cả dữ liệu bản mã lẫn giao diện phần mềm, có khả năng tự giải mã cục bộ mà không cần cài đặt thêm bất kỳ phần mềm hay tiện ích mở rộng nào.
 
 ---
 
-### 🔒 2. Tự động khoá & Bảo vệ bản nháp
+## 2. QUY ƯỚC ĐỊNH DẠNG DỮ LIỆU GÕ TẮT
 
-- **Khoá nhanh khi mất Focus**: Tự động xoá sạch dữ liệu khỏi màn hình và bộ nhớ RAM khi chuyển cửa sổ, tắt màn hình hoặc chuyển ứng dụng.
+Trong khung soạn thảo (Tab **SỬA DỮ LIỆU & TẠO FILE**), mỗi dòng văn bản tương ứng với một mục phím tắt. Ứng dụng hỗ trợ linh hoạt 3 loại ký tự phân cách giữa **Phím tắt** và **Nội dung sao chép**:
 
-- **Mã hoá bản nháp tức thì**: Nếu bạn đang gõ thêm dữ liệu giữa chừng mà bị khoá, nội dung gõ thêm sẽ được mã hoá AES-256 ngay trong phiên làm việc. Mở khoá ra là phục hồi nguyên vẹn 100%.
+| Ký tự phân cách | Cú pháp ví dụ | Kết quả nhận diện |
+| :--- | :--- | :--- |
+| **Dấu chấm phẩy (`;`)** | `dc; 123 Đường Lê Lợi, Quận 1` | Phím tắt: `dc`<br>Nội dung: `123 Đường Lê Lợi, Quận 1` |
+| **Ký tự Tab (`\t`)** | `mail[TAB]contact@example.com` | Phím tắt: `mail`<br>Nội dung: `contact@example.com` |
+| **Khoảng trắng (` `)** | `chuc Chúc bạn một ngày làm việc hiệu quả!` | Phím tắt: `chuc`<br>Nội dung: `Chúc bạn một ngày làm việc...` |
 
----
-
-### 📦 3. Tự tạo & Xuất tập tin HTML mới (Self-Bundler)
-
-- **Tập tin mẫu sạch 100%**: Bản mã nguồn tải lên GitHub không chứa dữ liệu cá nhân, mở lên dùng ngay không hỏi mật mã.
-
-- **Tự đóng gói trong 1 giây**: Chỉ cần dán dữ liệu vào Tab 2 ➔ Đặt mật mã ➔ Bấm **`TẢI FILE HTML`** để nhận tập tin cá nhân đã mã hoá riêng cho bạn.
-
----
-
-### 📱 4. Giao diện siêu tối ưu cho màn hình di động
-
-- **Thiết kế 2 Tab riêng biệt**: Tab 1 dành cho tra cứu/sao chép tốc độ cao; Tab 2 dành cho chỉnh sửa và quản lý.
-
-- **Cột phím tắt siêu gọn**: Tiêu đề mang biểu tượng phím `[A]`, chữ phím tắt xoay 90° ngược chiều kim đồng hồ giúp Cột 2 (nội dung) chiếm tới 90% diện tích hiển thị.
-
-- **Sao chép 1-chạm (Click-to-Copy)**: Bấm phím tắt ở Cột 1 là nạp ngay nội dung Cột 2 vào Clipboard kèm hiệu ứng phản hồi thị giác đổi màu trực quan.
+### Quy tắc định dạng nâng cao:
+* **Xuống dòng trong nội dung sao chép:** Sử dụng ký hiệu `\n` để ngắt dòng trong nội dung.  
+  *Ví dụ:* `ck; STK: 123456789\nNgân hàng: VCB\nChủ TK: DUONG TAN CHANH`  
+  *Kết quả khi dán ra sẽ thành 3 dòng riêng biệt.*
+* **Bảo toàn đường dẫn thư mục:** Ký hiệu `\\n` (hai dấu gạch chéo ngược) sẽ được bảo toàn nguyên bản dạng chuỗi, không bị biến thành dấu xuống dòng (thích hợp lưu đường dẫn Windows như `D:\notes\new_project`).
+* **Bỏ qua dòng chú thích:** Các dòng bắt đầu bằng ký tự thăng (`#`) hoặc các dòng trống sẽ tự động được bỏ qua.
 
 ---
 
-## 🚀 HƯỚNG DẪN SỬ DỤNG
+## 3. HƯỚNG DẪN CÁC CHỨC NĂNG CHÍNH
 
-### Bước 1: Mở tập tin mẫu
-
-- Tải tập tin `go-tat.html` về máy và nhấp đúp để mở bằng bất kỳ trình duyệt nào (Chrome, Edge, Safari, Firefox,...).
-
-- Tập tin mẫu ban đầu mở ra sẽ vào thẳng giao diện mà không yêu cầu mật mã.
-
----
-
-### Bước 2: Nạp dữ liệu của bạn
-
-- Chuyển sang **`Tab 2: SỬA DỮ LIỆU & TẠO FILE`**.
-
-- Dán danh sách của bạn vào ô soạn thảo theo cấu trúc mẫu sau:
-
-> `phím_tắt` **[Dấu Tab]** `Nội dung cần sao chép`
-
-- *(Hỗ trợ kéo thả tập tin `.txt`/`.tsv` hoặc bấm nút chọn tập tin từ máy).*
+### 3.1. Bảng Tra Cứu & Sao Chép Nhanh (Tab 1: BẢNG GÕ TẮT)
+* **Tra cứu tức thì:** Gõ từ khoá vào ô tìm kiếm ở đầu trang để lọc đồng thời cả phím tắt lẫn nội dung. Bộ tìm kiếm tự động chuẩn hoá Unicode `NFC`, hỗ trợ tìm chính xác tiếng Việt có dấu.
+* **Xoá nhanh tìm kiếm:** Nhấn phím `Esc` khi đang ở ô tìm kiếm để xoá trắng từ khoá và hiển thị lại toàn bộ danh sách.
+* **Sao chép nội dung:** Nhấp chuột hoặc chạm vào nút phím tắt (cột bên trái có chữ xoay dọc):
+  - Nội dung tương ứng sẽ lập tức được chép vào bộ nhớ tạm (Clipboard).
+  - Nút phím tắt chuyển sang màu xanh lá dịu xác nhận (`btn-copied`) và dòng tương ứng được đánh dấu viền sáng trong 1,5 giây.
+  - Một thanh thông báo tĩnh xuất hiện ở đáy màn hình xác nhận sao chép thành công.
+* **Tắt nhanh thông báo:** Nhấp vào nút `✕` trên thanh thông báo để tắt ngay lập tức.
 
 ---
 
-### Bước 3: Đặt mật mã & Xuất tập tin cá nhân
-
-- Nhập mật mã bảo vệ tại ô: **`Mật mã cho file HTML mới (Bắt buộc):`**
-
-- Nhấp nút **`💾 TẢI FILE HTML`**.
-
-- Trình duyệt sẽ tự động tải về tập tin `go-tat.html` mới đã được mã hoá AES-256.
-
----
-
-### Bước 4: Sử dụng hàng ngày
-
-- Mở tập tin vừa tải về ➔ Nhập mật mã của bạn để giải mã và tra cứu.
-
-- Bấm vào phím tắt để sao chép nội dung vào Clipboard.
-
-- Bấm nút **`🔒 KHOÁ LẠI`** ở góc trên bất cứ khi nào cần giấu dữ liệu tức thì.
+### 3.2. Soạn Thảo & Nạp Dữ Liệu (Tab 2: SỬA DỮ LIỆU & TẠO FILE)
+* **Phương thức nạp dữ liệu đa dạng:**
+  1. *Bấm nút chọn file:* Nhấn **"📁 CHỌN TẬP TIN TỪ MÁY"** để nạp các file văn bản (`.txt`, `.tsv`, `.csv`).
+  2. *Kéo thả:* Kéo tập tin văn bản từ máy tính thả trực tiếp vào vùng nét đứt `dropzoneArea`.
+  3. *Dán trực tiếp:* Nhấn `Ctrl + V` tập tin từ bộ nhớ hệ điều hành, hoặc bấm nút **"DÁN"** trên thanh công cụ để chèn nội dung văn bản thông minh vào vị trí con trỏ chuột.
+* **Nút TAB nổi công thái học:** Trên màn hình cảm ứng hoặc điện thoại di động không có phím Tab vật lý, bấm nút **"TAB"** nổi ở góc dưới khung soạn thảo để chèn nhanh ký tự phân cách Tab chuẩn.
+* **Khôi phục dữ liệu gốc:** Nút **"🔄 KHÔI PHỤC DỮ LIỆU GỐC"** cho phép huỷ toàn bộ các chỉnh sửa nháp đang có trong khung soạn thảo để quay về danh sách dữ liệu gốc ban đầu của file.
 
 ---
 
-## 🛠️ THÔNG SỐ KỸ THUẬT
-
-| Hạng mục | Chi tiết kỹ thuật |
-| :--- | :--- |
-| **Kiến trúc** | Single-Page Application (SPA) - 1 tập tin HTML duy nhất |
-| **Công nghệ** | Pure HTML5, CSS3 Variables, Vanilla JavaScript (Không thư viện ngoài) |
-| **Mã hoá** | AES-GCM (256-bit Key, 12-byte IV, 16-byte Salt) |
-| **Dẫn xuất khoá** | PBKDF2 (SHA-256, 600.000 Iterations) qua Web Crypto API |
-| **Nén dữ liệu** | Gzip qua Streams Compression API |
-| **Bảng màu** | Chuẩn 11 mã màu Dark Mode tối ưu độ tương phản |
-| **Bảng mã** | UTF-8 chuẩn hoá dấu tiếng Việt mới |
+### 3.3. Đo Độ Mạnh Mật Mã & Tạo File Mới Độc Lập
+* **Thước đo mật mã thông minh:** Khi nhập mật mã mới vào ô bảo vệ, hệ thống tự động kích hoạt bộ phân tích an ninh:
+  - Kiểm tra độ dài, chữ hoa, chữ thường, chữ số và ký hiệu đặc biệt.
+  - Tự động phát hiện và hạ điểm cảnh báo nếu mật mã chứa từ điển phổ biến (`password`, `matkhau`, `admin`...), chuỗi số liên tiếp (`123456`, `7890`) hoặc biến thể thay thế ký tự Leetspeak (`@` thay `a`, `0` thay `o`).
+* **Tiện ích sao chép mật mã:** Bấm nút **"Chép mật mã"** ngay cạnh ô nhập liệu để lưu trữ mật khẩu an toàn vào trình quản lý mật khẩu cá nhân trước khi xuất file.
+* **Xuất tập tin TSV:** Bấm **"TẢI FILE TSV"** để lưu danh sách phím tắt dưới dạng file bảng tính `go-tat.tsv` (được gắn kèm tiền tố UTF-8 BOM để mở tiếng Việt không bị lỗi font trên Microsoft Excel).
+* **Xuất tập tin HTML mã hoá mới:**
+  1. Nhập mật mã bảo vệ vào ô *"Mật mã cho file HTML mới"*.
+  2. Bấm **"TẢI FILE HTML"** (hoặc nhấn phím `Enter` tại ô mật mã, hoặc nhấn tổ hợp phím `Ctrl + S`).
+  3. Trình duyệt sẽ tải về một tập tin hoàn chỉnh mang tên **`index.html`**. Tập tin này đã được mã hoá AES-256 an toàn và sẵn sàng lưu trữ, chuyển giao hoặc sử dụng độc lập.
 
 ---
 
-## 👤 THÔNG TIN TÁC GIẢ
+### 3.4. Cơ Chế Khoá & Mở Khoá An Toàn
+Trạng thái an ninh của phần mềm được thể hiện trực quan qua nút bấm góc trên bên phải thanh tiêu đề:
 
-- **Tác giả:** Dương Tấn Chánh
+* **Trạng thái `FILE MẪU SẠCH` (Màu xanh lá):**  
+  Hiển thị khi mở một file mẫu chưa cài đặt mật mã. Mọi tính năng soạn thảo và tra cứu đều mở sẵn sàng để nạp dữ liệu.
+* **Trạng thái `KHOÁ LẠI` (Màu cam):**  
+  Hiển thị khi file đã được mở khoá thành công. Nhấn nút này bất kỳ lúc nào để giấu toàn bộ dữ liệu, xoá trắng bảng tra cứu và khoá ứng dụng ngay lập tức.
+* **Trạng thái `MỞ KHOÁ` (Màu xanh dương):**  
+  Hiển thị khi ứng dụng đang ở chế độ khoá bảo vệ. Nhấn nút này để hiển thị hộp thoại mở khoá:
+  - Nhập mật mã bảo vệ.
+  - Bấm chuột vào nút **"🔓 MỞ KHOÁ"** hoặc nhấn phím **`Enter`** trên bàn phím.
+  - Dữ liệu được xác thực và giải mã bung ra bảng chỉ trong khoảng **0.15 giây**.
 
-- **Mã nguồn:** Thuần JavaScript nguyên bản, bảo mật phía máy khách (Client-side Only).
+---
 
-- **Giấy phép:** Miễn phí sử dụng và chia sẻ cho mục đích cá nhân và công việc.
+## 4. BẢO MẬT & KIẾN TRÚC KỸ THUẬT
+
+1. **Chuẩn Mật Mã Học AES-256-GCM:**  
+   Toàn bộ dữ liệu phím tắt được đóng gói theo định dạng nhị phân độc quyền `DTC_ENC_01`:
+   `````text
+   [DTC_ENC_01 (10 Bytes)] + [Salt (16 Bytes)] + [IV (12 Bytes)] + [Ciphertext + Auth Tag (16 Bytes)]
